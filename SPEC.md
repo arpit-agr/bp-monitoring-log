@@ -79,12 +79,14 @@ ESC/ESH classification; a reading's category = the **worse** of its systolic and
 
 Plus the **doctor flag**: systolic ≥ 150 gets a distinct visual marker (doctor's follow-up threshold). Configurable constant.
 
+And the **low-BP indicator**: systolic < 90 **or** diastolic < 60 gets a distinct "Low" marker. The ESC table only grades *high* BP — it has no floor, so a 96/62 reads as "Optimal" — and low readings (especially alongside an elevated pulse) are part of the clinical picture too. Configurable constants, same as the rest.
+
 ## 4. Phase 1 — log readings today (MVP)
 
 1. **Entry form** (the whole game — target < 15 s per entry)
    - Date/time prefilled to now; slot auto-suggested; arm/position prefilled from the last reading
    - Numeric inputs with `inputmode="numeric"`, large touch targets; notes optional and collapsed
-2. **List view** — reverse-chronological, grouped by day; each reading shows SYS/DIA/pulse + slot + color-coded ESC category chip + doctor flag when systolic ≥ 150
+2. **List view** — reverse-chronological, grouped by day; each reading shows SYS/DIA/pulse + slot + color-coded ESC category chip + doctor flag when systolic ≥ 150 + low-BP indicator when systolic < 90 or diastolic < 60
 3. **Edit / delete** — edit reuses the entry form; delete asks for confirmation
 4. **JSON export / import** — full-document download and restore (import replaces after confirm). This is the backup story: browser storage is evictable and deleting an installed PWA deletes its data, so make weekly export a habit
 5. **PWA shell** — `manifest.webmanifest` (name, icons, standalone display) + a minimal cache-first service worker for offline; installable from the hosted URL
@@ -92,7 +94,7 @@ Plus the **doctor flag**: systolic ≥ 150 gets a distinct visual marker (doctor
 
 ## 5. Phase 2 — doctor report (before the next consult)
 
-- **Print/PDF report** via a print stylesheet (no PDF library): patient name, date range, readings table grouped by day × slot, summary block with per-slot and overall averages, and a count of readings at/above the 150 doctor threshold. Browser print → Save as PDF.
+- **Print/PDF report** via a print stylesheet (no PDF library): patient name, date range, readings table grouped by day × slot, summary block with per-slot and overall averages, and counts of readings at/above the 150 doctor threshold and below the low-BP threshold. Browser print → Save as PDF.
 - **CSV export** (secondary; column order mirrors the reading fields).
 
 ## 6. Phase 3 — later add-ons
@@ -138,5 +140,5 @@ Drawn from [arpit.codes/design-principles](https://v3.arpit.codes/design-princip
 
 - Add → reload → reading persists; edit and delete round-trip
 - Export JSON → clear site data → import → data restored
-- Enter 130/85 (high-normal), 152/95 (grade 1 + doctor flag), 79/85 (blocked: sys ≤ dia) and confirm chip colors/flags/validation
+- Enter 130/85 (high-normal), 152/95 (grade 1 + doctor flag), 88/58 (low indicator), 96/62 (optimal, *no* low indicator), 79/85 (blocked: sys ≤ dia) and confirm chip colors/flags/validation
 - Lighthouse PWA check passes; install to home screen; toggle airplane mode and confirm the app opens and saves offline
