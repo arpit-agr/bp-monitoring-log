@@ -16,7 +16,7 @@ Estimates include first-timer buffer. Slipping is fine; skipping ahead isn't.
 
 The app is not needed to start logging — a timestamp is. `takenAt` is editable, so everything you capture now gets backfilled in M3.
 
-- [ ] Create a note on your phone with this template and fill it in at each slot:
+- [x] Create a note on your phone with this template and fill it in at each slot:
   ```
   2026-07-03 19:15 | 128/84 | pulse 72 | left | sitting | notes: after dinner walk
   ```
