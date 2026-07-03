@@ -7,6 +7,7 @@ The spec is [SPEC.md](SPEC.md). This file is the *order of work*. Rules of the r
 3. **CSS discipline.** Until M8 you get *one* utility stylesheet of ~15 lines (system font stack, a max-width, `font-size: 16px+` on inputs so iOS doesn't zoom). Every other styling idea goes into [design-ideas.md](design-ideas.md) — write it down, walk away. M8 is your dedicated, guilt-free design milestone. The parking lot isn't punishment; it's how the fun survives until the app works.
 4. **Stuck > 30 minutes → ask Claude.** Paste the error, say what you expected. Struggling briefly is learning; struggling long is stalling.
 5. Each milestone lists **new concepts** — things you likely haven't met building static sites. Feeling confused there is expected, not a sign you're behind.
+6. **Journal at every milestone.** The same sitting that checks a "Done when" list also adds an entry to [JOURNAL.md](JOURNAL.md) — five minutes, while it's fresh. This is the raw material for the portfolio write-up later; it cannot be reconstructed afterwards.
 
 Estimates include first-timer buffer. Slipping is fine; skipping ahead isn't.
 
@@ -20,7 +21,7 @@ The app is not needed to start logging — a timestamp is. `takenAt` is editable
   ```
   2026-07-03 19:15 | 128/84 | pulse 72 | left | sitting | notes: after dinner walk
   ```
-- [ ] Keep doing this every slot until M3 ships. Pressure's off.
+- [ ] Keep doing this every slot until M3 ships — this is an ongoing chore, not a one-off. Leave this box unchecked until M3's backfill step retires the note; checking it *is* the sign M0 is over. Pressure's off.
 
 ---
 
@@ -44,10 +45,10 @@ The app is not needed to start logging — a timestamp is. `takenAt` is editable
 
 **Goal:** the app's brain, tested entirely from the DevTools console. Building this before any UI feels backwards coming from static sites — it's the single biggest habit shift of this project.
 
-- [ ] `src/thresholds.js`: export the ESC zone table, doctor flag (150), slot windows, and validation ranges from SPEC §2–3 as plain constants; add `categorize(systolic, diastolic)` returning the worse-of-the-two grade, and `suggestSlot(date)`
+- [ ] `src/thresholds.js`: export the ESC zone table, doctor flag (150), low-BP thresholds (< 90 / < 60), slot windows, and validation ranges from SPEC §2–3 as plain constants; add `categorize(systolic, diastolic)` returning the worse-of-the-two grade, `isLow(systolic, diastolic)`, and `suggestSlot(date)`
 - [ ] `src/storage.js`: `load()` / `save(doc)` wrapping localStorage key `bp-log` (creating the empty `schemaVersion: 1` document on first run), plus `addReading()`, `updateReading()`, `deleteReading()`
 - [ ] In the browser console: import and call `addReading()` with a fake reading, reload the page, `load()` shows it's still there
-- [ ] Console-check: `categorize(152, 95)` → grade 1, `categorize(118, 76)` → optimal
+- [ ] Console-check: `categorize(152, 95)` → grade 1, `categorize(118, 76)` → optimal, `isLow(88, 58)` → true, `isLow(96, 62)` → false
 
 **Done when:** a reading added from the console survives a reload, and `categorize` answers correctly for the SPEC §9 test values.
 
@@ -77,7 +78,7 @@ The app is not needed to start logging — a timestamp is. `takenAt` is editable
 
 - [ ] Render all readings below the form: grouped by day, reverse-chronological, each showing time, slot, SYS/DIA, pulse, arm/position
 - [ ] ESC category chip using `categorize()` — **text label + color, never color alone** (SPEC §8.3)
-- [ ] Doctor flag marker on any reading with systolic ≥ 150
+- [ ] Doctor flag marker on any reading with systolic ≥ 150; low-BP marker on any reading where `isLow()` is true
 - [ ] List re-renders after saving a new reading
 
 **Done when:** your real readings display grouped by day with correct chips, and a fresh save appears without a reload.
@@ -144,7 +145,7 @@ Open [design-ideas.md](design-ideas.md) and go wild. You've earned it; the app w
 ## Phase 2 — before the next consult
 
 ### M9 — Doctor report (~2 h)
-- [ ] Report view: patient name, date range, table grouped by day × slot, summary block (per-slot + overall averages, count of readings ≥ 150)
+- [ ] Report view: patient name, date range, table grouped by day × slot, summary block (per-slot + overall averages, counts of readings ≥ 150 and of low readings)
 - [ ] Print stylesheet (`@media print`): hide app chrome, black-on-white table, sensible page breaks
 - [ ] Phone test: open report → system print → Save as PDF → share
 
@@ -159,6 +160,7 @@ Open [design-ideas.md](design-ideas.md) and go wild. You've earned it; the app w
 - Multi-patient UI (schema already supports it)
 - "Not a medical device" disclaimer if ever shared publicly
 - Real app icon (if still in the parking lot)
+- Portfolio README: what/why, screenshots, live URL, stack, key decisions, distilled from JOURNAL.md — write it when the project goes on the portfolio site
 
 ---
 
